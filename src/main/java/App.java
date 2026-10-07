@@ -1,6 +1,8 @@
 public class App {
     private int player = 1;
     private int turns = 1;
+    private int scoreplayer1 = 0;
+    private int scoreplayer2 = 0;
 
     public static void main(String[] args) throws Exception {
         System.out.println(FizzBuzz(3));
@@ -23,16 +25,28 @@ public class App {
         return result;
     }
 
-    public int playersTurn() {
+    public int playerWhosUp() {
       return player;
     }
 
-    public void takeTurn() {
-        System.out.println("Turn " + turns + " by Player " + player + " : " + FizzBuzz(turns++));
+    public String takeTurn(String guess) {
+        String result = FizzBuzz(turns);
+        if (guess.equals(result)) {
+            if (player == 1)
+                scoreplayer1++;
+            else
+                scoreplayer2++;
+        }
+        System.out.println("Turn " + turns++ + " by Player " + player + " : " + result);
         player = player == 1 ? 2 : 1;
+        return result;
     }
 
     public int turn() {
       return turns;
+    }
+
+    public int ScorePlayer(int player) {
+        return player == 1 ? scoreplayer1 : scoreplayer2;
     }
 }
