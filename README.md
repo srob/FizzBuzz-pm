@@ -32,7 +32,7 @@ Run all examples with `mvn test` or the **Test all examples** task.
 and pull requests targeting `main`. You can also start it manually from
 **Actions > FizzBuzz CI > Run workflow** on GitHub.
 
-The job checks out the code, installs Temurin Java 17 (matching `pom.xml`),
+The job checks out the code, installs Temurin Java 25 (while `pom.xml` retains a Java 17 compilation target),
 caches Maven dependencies, and runs:
 
 ```sh
