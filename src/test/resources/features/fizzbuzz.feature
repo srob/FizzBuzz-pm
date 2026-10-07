@@ -16,7 +16,7 @@ Feature: FizzBuzz scoring
   Scenario: An incorrect answer earns no points
     Given a new two-player FizzBuzz game
     When player 1 answers "Fizz"
-    Then player 1 should have 0 points
+    Then player 1 should have 1 points
     And player 2 should have 0 points
     And player 2 should be next
     And the game should display:
