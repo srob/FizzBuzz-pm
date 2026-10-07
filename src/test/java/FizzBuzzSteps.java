@@ -18,10 +18,20 @@ public class FizzBuzzSteps {
     @Given("a new two-player FizzBuzz game")
     public void aNewGame() {
         game = new App();
+        captureConsole();
+    }
+
+    private void captureConsole() {
         output = new ByteArrayOutputStream();
         originalOut = System.out;
         capturedOut = new PrintStream(output, true, StandardCharsets.UTF_8);
         System.setOut(capturedOut);
+    }
+
+    @Given("a two-player FizzBuzz game with {int} turns per player")
+    public void aGameWithTurnsPerPlayer(int turnsPerPlayer) {
+        game = new App(turnsPerPlayer);
+        captureConsole();
     }
 
     @When("player {int} answers {string}")
@@ -47,6 +57,16 @@ public class FizzBuzzSteps {
         String actual = output.toString(StandardCharsets.UTF_8)
             .replace(System.lineSeparator(), "\n");
         assertEquals(expected + "\n", actual);
+    }
+
+    @Then("the game should display the final scoreboard:")
+    public void gameDisplaysFinalScoreboard(String expected) {
+        String actual = output.toString(StandardCharsets.UTF_8)
+            .replace(System.lineSeparator(), "\n");
+        int scoreboardStart = actual.indexOf("Final scoreboard\n");
+        org.junit.Assert.assertTrue("Expected a final scoreboard, but output was:\n"
+            + actual, scoreboardStart >= 0);
+        assertEquals(expected + "\n", actual.substring(scoreboardStart));
     }
 
     @After

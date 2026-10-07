@@ -38,3 +38,16 @@ Feature: FizzBuzz scoring
       Turn 2 by Player 2: 2 (ScorePlayer1: 1, ScorePlayer2: 1)
       Turn 3 by Player 1: Fizz (ScorePlayer1: 2, ScorePlayer2: 1)
       """
+
+  Scenario: Display the final scoreboard when player 1 wins
+    Given a two-player FizzBuzz game with 2 turns per player
+    When player 1 answers "1"
+    And player 2 answers "wrong"
+    And player 1 answers "Fizz"
+    And player 2 answers "4"
+    Then the game should display the final scoreboard:
+      """
+      Final scoreboard
+      Player 1: 2 points - Winner!
+      Player 2: 1 point
+      """
