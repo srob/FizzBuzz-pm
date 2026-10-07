@@ -51,7 +51,10 @@ public class FizzBuzzTest {
   @Test
   public void afterPlayer1GuessedCorrectly_ScoreIsOne() {
     App app = new App();
+    java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();    
+    System.setOut(new java.io.PrintStream(out));
     app.takeTurn("1");
+    assertEquals("Turn 1 by Player 1: 1 (ScorePlayer1: 1, ScorePlayer2: 0)\n", out.toString());
     assertEquals(1, app.ScorePlayer(1));
   }
 

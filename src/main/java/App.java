@@ -37,7 +37,7 @@ public class App {
             else
                 scoreplayer2++;
         }
-        System.out.println("Turn " + turns++ + " by Player " + player + " : " + result);
+        System.out.println("Turn " + turns++ + " by Player " + player + ": " + result + " (ScorePlayer1: " + scoreplayer1 + ", ScorePlayer2: " + scoreplayer2 + ")");
         player = player == 1 ? 2 : 1;
         return result;
     }
