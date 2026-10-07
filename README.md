@@ -28,7 +28,7 @@ Run all examples with `mvn test` or the **Test all examples** task.
 
 ## GitHub Actions CI
 
-`.github/workflows/ci.yml` runs the six FizzBuzz tests on pushes to `main`
+`.github/workflows/ci.yml` runs the FizzBuzz unit tests and Cucumber acceptance scenarios on pushes to `main`
 and pull requests targeting `main`. You can also start it manually from
 **Actions > FizzBuzz CI > Run workflow** on GitHub.
 
@@ -36,13 +36,16 @@ The job checks out the code, installs Temurin Java 17 (matching `pom.xml`),
 caches Maven dependencies, and runs:
 
 ```sh
-mvn --batch-mode --no-transfer-progress -Dtest=FizzBuzzTest test
+mvn --batch-mode --no-transfer-progress '-Dtest=FizzBuzzTest,FizzBuzzAcceptanceTest' test
 ```
 
-`-Dtest=FizzBuzzTest` selects only FizzBuzz tests. Maven still compiles all
+`-Dtest=FizzBuzzTest,FizzBuzzAcceptanceTest` selects both FizzBuzz suites. Maven still compiles all
 application and test sources in this shared project. A compile error elsewhere
 can therefore fail this job, but PrimesTest and PlayerTest are not executed.
-Any failing FizzBuzz test fails the job. Batch mode avoids interactive prompts;
+Any failing FizzBuzz test or acceptance scenario fails the job.
+The run saves the Surefire results and Cucumber HTML report as the
+`fizzbuzz-test-reports` artifact, including on test failures, for 14 days.
+Download it from the workflow run page on GitHub to inspect the reports. Batch mode avoids interactive prompts;
 no-transfer-progress keeps dependency download progress out of the logs.
 
 Run the FizzBuzz demonstration using **Run** above `main` in `App.java`, or:
@@ -59,3 +62,28 @@ java -cp target/classes App
 - `target`: generated classes and test reports.
 
 The old `bin` output and `lib` JUnit console jar are no longer used by Maven.
+
+## Local FizzBuzz acceptance tests
+
+Cucumber-JVM uses readable Given/When/Then scenarios alongside the existing JUnit tests.
+Cucumber 7.34.9 keeps the existing JUnit 4 runner supported without changing the project's test framework.
+
+- `src/test/resources/features/fizzbuzz.feature`: three scenarios for scoring, alternating players, and score display.
+- `src/test/java/FizzBuzzSteps.java`: steps that call the game and assert its results. Each scenario gets a fresh game, with an `@After` hook restoring captured console output even if a step fails.
+- `src/test/java/FizzBuzzAcceptanceTest.java`: JUnit runner selecting only the FizzBuzz feature.
+
+Choose **Terminal > Run Task > Test FizzBuzz acceptance**, or run:
+
+```sh
+mvn --batch-mode --no-transfer-progress -Dtest=FizzBuzzAcceptanceTest test
+```
+
+The readable HTML report is generated at `target/cucumber/fizzbuzz.html`.
+To run both FizzBuzz suites, use:
+
+```sh
+mvn '-Dtest=FizzBuzzTest,FizzBuzzAcceptanceTest' test
+```
+
+`mvn test` includes the acceptance scenarios and all existing unit tests.
+CI runs both FizzBuzz suites and saves their reports as a downloadable artifact.

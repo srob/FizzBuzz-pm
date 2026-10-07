@@ -27,5 +27,15 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Run FizzBuzz tests
-        run: mvn --batch-mode --no-transfer-progress -Dtest=FizzBuzzTest test
+      - name: Run FizzBuzz unit and acceptance tests
+        run: mvn --batch-mode --no-transfer-progress '-Dtest=FizzBuzzTest,FizzBuzzAcceptanceTest' test
+
+      - name: Save FizzBuzz test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fizzbuzz-test-reports
+          path: |
+            target/surefire-reports/
+            target/cucumber/
+          retention-days: 14

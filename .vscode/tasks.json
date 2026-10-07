@@ -33,6 +33,22 @@
                 "isDefault": false
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Test FizzBuzz acceptance",
+            "type": "process",
+            "command": "mvn",
+            "args": [
+                "--batch-mode",
+                "--no-transfer-progress",
+                "-Dtest=FizzBuzzAcceptanceTest",
+                "test"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "test",
+            "problemMatcher": []
         }
     ]
 }
