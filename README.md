@@ -13,7 +13,7 @@ Maven manages compilation and JUnit dependencies, removing the need for VSCode's
 
 If VSCode still shows the old layout, run **Java: Clean Java Language Server Workspace** and allow it to restart.
 
-Requires JDK 17 or newer and Maven. This machine has JDK 23 and Maven 3.9.9.
+Requires JDK 25 or newer and Maven. Maven targets Java 25 bytecode.
 The first build needs access to Maven Central to download dependencies.
 
 ## Run tests
@@ -32,7 +32,7 @@ Run all examples with `mvn test` or the **Test all examples** task.
 and pull requests targeting `main`. You can also start it manually from
 **Actions > FizzBuzz CI > Run workflow** on GitHub.
 
-The job checks out the code, installs Temurin Java 25 (while `pom.xml` retains a Java 17 compilation target),
+The job checks out the code, installs Temurin Java 25 (matching the compilation target in `pom.xml`),
 caches Maven dependencies, and runs:
 
 ```sh
