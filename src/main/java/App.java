@@ -19,7 +19,7 @@ public class App {
         if (number % 5 == 0) {
             result += "Buzz";
         }
-        if (result == "") {
+        if (result.equals("")) {
             result += number;
         }
         return result;
