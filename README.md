@@ -26,6 +26,25 @@ mvn -Dtest=FizzBuzzTest test
 
 Run all examples with `mvn test` or the **Test all examples** task.
 
+## GitHub Actions CI
+
+`.github/workflows/ci.yml` runs the six FizzBuzz tests on pushes to `main`
+and pull requests targeting `main`. You can also start it manually from
+**Actions > FizzBuzz CI > Run workflow** on GitHub.
+
+The job checks out the code, installs Temurin Java 17 (matching `pom.xml`),
+caches Maven dependencies, and runs:
+
+```sh
+mvn --batch-mode --no-transfer-progress -Dtest=FizzBuzzTest test
+```
+
+`-Dtest=FizzBuzzTest` selects only FizzBuzz tests. Maven still compiles all
+application and test sources in this shared project. A compile error elsewhere
+can therefore fail this job, but PrimesTest and PlayerTest are not executed.
+Any failing FizzBuzz test fails the job. Batch mode avoids interactive prompts;
+no-transfer-progress keeps dependency download progress out of the logs.
+
 Run the FizzBuzz demonstration using **Run** above `main` in `App.java`, or:
 
 ```sh
