@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
 import io.cucumber.java.After;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -39,6 +40,19 @@ public class FizzBuzzSteps {
         assertEquals("The expected player should be taking this turn",
             player, game.playerWhosUp());
         game.takeTurn(answer);
+    }
+
+    @When("the players answer in this order:")
+    public void playersAnswerInOrder(DataTable answers) {
+        for (java.util.Map<String, String> row : answers.asMaps()) {
+            playerAnswers(Integer.parseInt(row.get("player")), row.get("answer"));
+        }
+    }
+
+    @Then("the final scoreboard should not be displayed yet")
+    public void finalScoreboardIsNotDisplayedYet() {
+        org.junit.Assert.assertFalse("The scoreboard appeared before the final turn",
+            output.toString(StandardCharsets.UTF_8).contains("Final scoreboard"));
     }
 
     @Then("player {int} should have {int} point(s)")

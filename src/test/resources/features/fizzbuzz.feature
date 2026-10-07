@@ -51,3 +51,77 @@ Feature: FizzBuzz scoring
       Player 1: 2 points - Winner!
       Player 2: 1 point
       """
+
+  Scenario: Player 2 wins a longer game with a mix of correct and incorrect answers
+    Given a two-player FizzBuzz game with 4 turns per player
+    When the players answer in this order:
+      | player | answer |
+      | 1      | 1      |
+      | 2      | wrong  |
+      | 1      | Fizz   |
+      | 2      | 4      |
+      | 1      | 5      |
+      | 2      | Fizz   |
+      | 1      | wrong  |
+    Then player 1 should have 2 points
+    And player 2 should have 2 points
+    And the final scoreboard should not be displayed yet
+    When player 2 answers "8"
+    Then the game should display the final scoreboard:
+      """
+      Final scoreboard
+      Player 1: 2 points
+      Player 2: 3 points - Winner!
+      """
+
+  Scenario: A perfect game ends in a tie including a correct FizzBuzz answer
+    Given a two-player FizzBuzz game with 8 turns per player
+    When the players answer in this order:
+      | player | answer   |
+      | 1      | 1        |
+      | 2      | 2        |
+      | 1      | Fizz     |
+      | 2      | 4        |
+      | 1      | Buzz     |
+      | 2      | Fizz     |
+      | 1      | 7        |
+      | 2      | 8        |
+      | 1      | Fizz     |
+      | 2      | Buzz     |
+      | 1      | 11       |
+      | 2      | Fizz     |
+      | 1      | 13       |
+      | 2      | 14       |
+      | 1      | FizzBuzz |
+    Then player 1 should have 8 points
+    And player 2 should have 7 points
+    And the final scoreboard should not be displayed yet
+    When player 2 answers "16"
+    Then the game should display the final scoreboard:
+      """
+      Final scoreboard
+      Player 1: 8 points
+      Player 2: 8 points
+      It's a tie!
+      """
+
+  Scenario: Both players score zero when every answer is incorrect
+    Given a two-player FizzBuzz game with 3 turns per player
+    When the players answer in this order:
+      | player | answer |
+      | 1      | wrong  |
+      | 2      | wrong  |
+      | 1      | 3      |
+      | 2      | wrong  |
+      | 1      | 5      |
+    Then player 1 should have 0 points
+    And player 2 should have 0 points
+    And the final scoreboard should not be displayed yet
+    When player 2 answers "6"
+    Then the game should display the final scoreboard:
+      """
+      Final scoreboard
+      Player 1: 0 points
+      Player 2: 0 points
+      It's a tie!
+      """
